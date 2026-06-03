@@ -239,6 +239,14 @@ function submitDate(){
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
     const activity = document.getElementById("activity").value;
+    fetch("https://script.google.com/macros/s/AKfycbwD706j-I5Zt_ia4ZCuGCmHzz9-ef93nYKK0qMoGNdQ0GGydM5sAdE5wcqr8OmuFu02/exec", {
+    method: "POST",
+    body: JSON.stringify({
+        date: date,
+        time: time,
+        activity: activity
+    })
+});
 
     document.getElementById("page2").classList.add("hidden");
     document.getElementById("page3").classList.remove("hidden");
