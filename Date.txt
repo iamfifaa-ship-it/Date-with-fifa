@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 คำถามสำคัญ</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: system-ui, sans-serif;
+    background: linear-gradient(135deg,#ffe6f0,#fff5f7);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+    padding:30px;
+    max-width:600px;
+}
+
+.card{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+h1{
+    margin-bottom:15px;
+}
+
+p{
+    margin-bottom:20px;
+}
+
+button{
+    border:none;
+    border-radius:15px;
+    padding:15px 30px;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#yesBtn{
+    background:#ff4f87;
+    color:white;
+}
+
+#noBtn{
+    background:#ddd;
+    margin-left:10px;
+    position:relative;
+}
+
+#message{
+    margin-top:20px;
+    min-height:30px;
+    font-size:20px;
+    font-weight:bold;
+    color:#ff4f87;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.hidden{
+    display:none;
+}
+
+.heart{
+    position:fixed;
+    font-size:25px;
+    animation:fall 5s linear forwards;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-100px);
+    }
+    to{
+        transform:translateY(110vh);
+    }
+}
+
+#secretBtn{
+    position:fixed;
+    top:15px;
+    right:15px;
+    font-size:25px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div id="secretBtn">❤️</div>
+
+<div class="container">
+
+    <div id="page1" class="card">
+
+        <h1>💌 มีเรื่องสำคัญจะถาม</h1>
+
+        <p>อยากไปเดทด้วยกันไหม?</p>
+
+        <button id="yesBtn">💖 ไปสิ</button>
+        <button id="noBtn">😐 ไม่</button>
+
+        <div id="message"></div>
+
+    </div>
+
+    <div id="page2" class="card hidden">
+
+        <h1>🎉 ภารกิจสำเร็จ</h1>
+
+        <p>ดีใจจัง งั้นมานัดกันเลย</p>
+
+        <input type="date" id="date">
+
+        <input type="time" id="time">
+
+        <select id="activity">
+            <option>กินข้าว</option>
+            <option>คาเฟ่</option>
+            <option>ดูหนัง</option>
+            <option>เดินเล่น</option>
+            <option>ฟังเพลง</option>
+            <option>อะไรก็ได้ ขอแค่ไปกับเธอ 😳</option>
+        </select>
+
+        <button onclick="submitDate()" id="yesBtn">
+            ส่งคำตอบ
+        </button>
+
+    </div>
+
+    <div id="page3" class="card hidden">
+
+        <h1>❤️ คำขอนัดเดทได้รับการอนุมัติแล้ว</h1>
+
+        <div id="summary"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const messages = [
+"ใจร้ายจัง 🥺",
+"ไม่ไปจริงเหรอ 😭",
+"เสียใจมาก 💔",
+"อยากร้องไห้แล้วนะ 🥹",
+"งั้นขอลองถามใหม่อีกที...",
+"ตอบผิดหรือเปล่า 🤔",
+"ระบบตรวจพบความใจร้าย 🚨",
+"แน่ใจนะ เดี๋ยวเสียโอกาสกินของอร่อยนะ 🍜"
+];
+
+let noCount = 0;
+let yesScale = 1;
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("click",()=>{
+
+    noCount++;
+
+    document.getElementById("message").innerText =
+        messages[Math.floor(Math.random()*messages.length)];
+
+    yesScale += 0.15;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    if(noCount === 10){
+        alert("🚨 การปฏิเสธเกินกำหนด กรุณาพิจารณาคำตอบใหม่อีกครั้ง");
+    }
+
+    if(noCount >= 15){
+
+        const x = Math.random() * (window.innerWidth - 150);
+        const y = Math.random() * (window.innerHeight - 100);
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    if(noCount >= 30){
+
+        document.body.innerHTML = `
+        <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+        width:100vw;
+        height:100vh;
+        background:black;
+        color:white;
+        text-align:center;
+        font-family:sans-serif;">
+        <h1>🥲 ยอมแล้วครับ</h1>
+        <p>เป็นเพื่อนกันก็ได้</p>
+        <button onclick="location.reload()"
+        style="padding:15px 25px;margin-top:20px;">
+        ล้อเล่น กดไปเดทเถอะ
+        </button>
+        </div>
+        `;
+    }
+});
+
+yesBtn.addEventListener("click",()=>{
+    document.getElementById("page1").classList.add("hidden");
+    document.getElementById("page2").classList.remove("hidden");
+});
+
+function submitDate(){
+
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const activity = document.getElementById("activity").value;
+
+    document.getElementById("page2").classList.add("hidden");
+    document.getElementById("page3").classList.remove("hidden");
+
+    document.getElementById("summary").innerHTML = `
+    <h2>📅 ${date}</h2>
+    <h2>🕒 ${time}</h2>
+    <h2>🎯 ${activity}</h2>
+    <br>
+    <p>ขอบคุณที่ไม่กดปฏิเสธจนถึงครั้งที่ ${noCount} 😂</p>
+    `;
+
+    createHearts();
+}
+
+function createHearts(){
+
+    setInterval(()=>{
+
+        const heart = document.createElement("div");
+
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+
+        heart.style.left =
+            Math.random()*window.innerWidth+"px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },5000);
+
+    },250);
+}
+
+document.getElementById("secretBtn").addEventListener("click",()=>{
+
+    alert(
+`ข้อดีของการไปเดทกับผม
+
+🍜 เลี้ยงข้าวได้
+🛵 รับส่งได้
+📸 ถ่ายรูปให้ได้
+👨‍🍳 ทำอาหารให้กินได้
+🥹 มุกอาจจะฝืด แต่ตั้งใจนะ`
+    );
+
+});
+
+</script>
+
+</body>
+</html>
